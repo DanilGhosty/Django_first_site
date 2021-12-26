@@ -1,3 +1,8 @@
 .bg{
     background-image: url(https://i.pinimg.com/originals/11/1a/03/111a03133d14214539c96e0f657dff1a.png);
 }
+.Welcome{
+    background: linear-gradient(to right, #ee7752, #e73c7e, #23a6d5, #23d5ab 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
