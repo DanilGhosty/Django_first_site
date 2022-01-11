@@ -1,13 +1,14 @@
 {% extends 'navbar.html' %}
 
 {% block content %}
-<div class="container">
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button class="btn waves-effect waves-light" type="submit">Submit
-        </button>
-    </form>
-    <p>If u already have an account, so <a href="/login"><strong>login</strong></a></p>
-</div>
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button class="btn waves-effect waves-light" type="submit">Submit
+            </button>
+        </form>
+        <p>If u already have an account, so <a href="/login"><strong>login</strong></a></p>
+    </div>
+
 {% endblock %}

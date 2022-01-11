@@ -30,10 +30,24 @@
       </ul>
     </div>
   </nav>
-        
-    {% block content %}
+</body> 
+{% block content %}
+{% endblock %}
 
-    {% endblock %}
+{% if messages %}
+  {% for msg in messages %}
+    <script>
+        M.AutoInit();
+        {% if msg.tags == 'error' %}
+            M.toast({html: '{{msg}}',classes:"orange", displayLength:15000});
+        {% elif msg.tags == 'success' %};
+            M.toast({html: '{{msg}}',classes:"green", displayLength:15000});
+        {% elif msg.tags == 'info' %};
+            M.toast({html: '{{msg}}',classes:"blue", displayLength:15000});
+        {% endif %}
+    </script>
+  {% endfor %}
+{% endif %}
     
 </body>
 </html>
