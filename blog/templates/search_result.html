@@ -1,0 +1,33 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<script>document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.collapsible');
+  var instances = M.Collapsible.init(elems);});
+</script>
+<body>
+<div class="container">
+    <div class="row">
+    {% for post in posts%}
+    <div class="col s12 m5 l5">
+      <div class="card large hoverable">
+        <div class="card-image">
+          <img src="/{{post.post_img}}">
+          <span class="card-title flow-text light-blue-text darken-2-text ">{{post.title|upper}}</span>
+        </div>
+        <div class="card-content amber-text">
+          <p class="flow-text">{{post.text|truncatewords:5}}</p>
+          
+        </div>
+        <div class="card-action">
+          <a href="/{{post.post_slug}}">Дивитись далі =></a>
+        </div>
+      </div>
+    </div>
+    
+    {% endfor %}
+    {% include "sidebar.html" %}
+</div>
+</body>
+
+{% endblock %}

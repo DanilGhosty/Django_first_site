@@ -4,7 +4,16 @@
     <div class="container">
         <form method="POST">
             {% csrf_token %}
-            {{form.as_p}}
+            {% for field in form %}
+            <div class="row">
+                <p class="red-text">{{field.errors}}</p>
+                <p class="blue-text">{{field.label_tag}}</p>
+                <div class="input-field col s6">    
+                    {{field}}
+                    <span class="helper-text">{{field.helpertext}}</span>
+                </div>
+            </div>
+            {% endfor %}
             <button class="btn waves-effect waves-light" type="submit">Submit
             </button>
         </form>

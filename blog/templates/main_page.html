@@ -1,13 +1,17 @@
 {% extends 'navbar.html' %}
 
 {% block content %}
+<script>document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.collapsible');
+  var instances = M.Collapsible.init(elems);});
+</script>
+<body>
 <div class="container">
     <h1 class="Welcome">Welcome to sitama</h1>
     <p>Today is a nice day</p> 
-
     <div class="row">
     {% for post in posts%}
-    <div class="col s12 m6 l4">
+    <div class="col s12 m5 l5">
       <div class="card large hoverable">
         <div class="card-image">
           <img src="{{post.post_img}}">
@@ -18,13 +22,35 @@
           
         </div>
         <div class="card-action">
-          <a href="#">Дивитись далі =></a>
+          <a href="/{{post.post_slug}}">Дивитись далі =></a>
         </div>
       </div>
     </div>
+    
     {% endfor %}
-    </div>
+    {% include "sidebar.html" %}
+    <ul class="pagination">
+      {% if posts.has_previous %}
+        <li class="waves-effect"><a href="?page={{ posts.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
+      {% else %}
+        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+      {% endif %}
+      {% for num in posts.paginator.page_range %}
+        {% if posts.number == num %}
+          <li class="active"><a href="">{{ num }}</a></li>
+        {% else %}
+          <li class="waves-effect"><a href="?page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if posts.has_next %}
+        <li class="waves-effect"><a href="?page={{ posts.next_page_number }}"><i class="material-icons">chevron_right</i></a></li>
+      {% else %}
+        <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+      {% endif %}
+    </ul>
 </div>
+</body>
+
 {% endblock %}
 
-<!---->
+<!--abababa-->

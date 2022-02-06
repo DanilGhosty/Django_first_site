@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {% load static %}
 
 <head>
@@ -9,7 +10,8 @@
     <link rel="stylesheet" href="{% static 'css/blog.css' %}">
     <title>Blog</title>
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="{% static 'css/materialize.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -18,8 +20,20 @@
 <body class="bg">
   <nav>
     <div class="nav-wrapper light-blue darken-4">
-      <a href="/" class="brand-logo amber-text darken-4-text">Sitama</a>
+      <a href="/" class="brand-logo col s2 m2 l2 amber-text darken-4-text">Sitama</a>
+      
+    
       <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li>
+          <form class="" id="search_nav" method="POST" action="{% url 'search_post'%}">
+            {% csrf_token %}
+            <input type="search" name="searchpost" placeholder="Search">           
+          </form>
+        </li>
+        <li>
+          <button class="btn waves-effect waves-light" form="search_nav" type="submit">
+            Search</button>
+        </li>
         <li><a href="/">Home</a></li>
         {% if not user.is_authenticated %}
         <li><a href="/login">Login</a></li>

@@ -10,6 +10,11 @@ urlpatterns = [
     path('register/',views.register),
     path('logout/',views.logout_request),
     path('login/', views.login_request),
+    path('search_post/',views.search_post,name="search_post"),
+    path('<single_slug>/', views.single_slug, name = "slug_url"),
+
+    
+    
 
 ]
 urlpatterns+=static(settings.STATIC_URL,
