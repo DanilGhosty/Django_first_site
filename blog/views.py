@@ -1,8 +1,6 @@
-import imp
-from multiprocessing import context
 from turtle import title
 from unicodedata import category
-from django.shortcuts import redirect, render, redirect
+from django.shortcuts import redirect, render
 from django.http import  HttpResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
@@ -10,13 +8,18 @@ from django.contrib import messages
 from django.views.defaults import page_not_found
 from django.http import Http404
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from .forms import AddPostForm
 from .models import Post, Post_category
+
 
 # Create your views here.
 
 def paginator(request, posts):
     paginator = Paginator(posts, 2)
-    page = request.GET.get('page')
+    if request.method == 'POST':
+        page = request.POST.get('page')
+    else :
+        page = request.GET.get('page')
     try:
         posts_page = paginator.page(page)
     except PageNotAnInteger:
@@ -39,13 +42,34 @@ def main_page(request):
     }
     return render(request, 'main_page.html', context)
 
+def add_post(request):
+    add_post_form=None
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            add_post_form = AddPostForm(request.POST, request.FILES)
+            if add_post_form.is_valid():
+                url = request.POST.get('post_slug')
+                new_post = add_post_form.save()
+                new_post.save()
+                print(url)
+                return redirect(f"/{url}")
+            else:
+                print("unValid")
+        else:
+            add_post_form = AddPostForm()
+    context={
+        'post_form':add_post_form,
+    }        
+    return render(request,'add_post.html', context)
 
 def search_post(request):
     posts = None
     if request.method == 'POST':
         searched= request.POST.get('searchpost')
         posts = Post.objects.filter(title__icontains=searched)
+        posts = paginator(request, list(posts))
     sidebar = Post_category.objects.all()
+ 
     context = {'posts':posts,"sidebar":sidebar}
     
     return render(request, 'search_result.html',context)
@@ -59,8 +83,9 @@ def single_slug(request,single_slug):
         return render(request, 'category.html', {'posts':category_posts,'sidebar': sidebar})
     posts_slug = [ p.post_slug for p in Post.objects.all()]
     if single_slug in posts_slug:
-        post = Post.objects.get(post_slug=single_slug)
-        context = {"post": post,'sidebar': sidebar}
+        posts = Post.objects.get(post_slug=single_slug)
+
+        context = {"post": posts,'sidebar': sidebar}
         return render(request, 'post_view.html', context)
     
     #post_slug =[p.post_slug for p in Post.objects.all() ]
@@ -68,8 +93,8 @@ def single_slug(request,single_slug):
     #    post = Post.objects.get(post_slug = single_slug)
     #    context = {"post": post}
     #    return render(request, 'post_view.html', context)
-    else:
-        raise Http404
+    #else:
+    #    raise Http404
         #page_not_found(request, 'Articule not founde')
         
         

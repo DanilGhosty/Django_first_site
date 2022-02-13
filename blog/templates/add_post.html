@@ -1,0 +1,25 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+    <div class="container">
+        <h3>Create your title</h3>
+        <form method="POST"  enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in post_form %}
+                <div class="row">
+
+                    <p class="red-text">{{field.errors}}</p>
+                    <p class="black-text">{{field.label_tag}}</p>
+                    <div class="input-field col s12">
+                        {{field}}
+                        <span class="helper-text"> {{field.helper_text}}</span>
+                    </div>
+                </div>
+            {% endfor %}
+            <button class="btn waves-effect waves-light" type="submit">
+                Submit
+            </button>
+        </form>
+    </div>
+{% endblock %}
+
