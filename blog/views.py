@@ -1,5 +1,5 @@
+import re
 from turtle import title
-from unicodedata import category
 from django.shortcuts import redirect, render
 from django.http import  HttpResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -8,8 +8,8 @@ from django.contrib import messages
 from django.views.defaults import page_not_found
 from django.http import Http404
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
-from .forms import AddPostForm
-from .models import Post, Post_category
+from .forms import AddPostForm,AddComment
+from .models import Post, Post_category, Comment
 
 
 # Create your views here.
@@ -74,6 +74,19 @@ def search_post(request):
     
     return render(request, 'search_result.html',context)
 
+def post_comment(request, post):
+    if request.method == 'POST':
+        form = AddComment(request.POST or None)
+        if form.is_valid():
+            content = request.POST.get('content')
+            comment = Comment.objects.create(post = post,author = request.user, content = content)
+            comment.save()
+            return redirect(f'/{post.post_slug}')
+        else:
+            return redirect(f'/{post.post_slug}')
+    else:
+        form = AddComment()
+        return form
 
 def single_slug(request,single_slug):
     sidebar = Post_category.objects.all()
@@ -84,9 +97,12 @@ def single_slug(request,single_slug):
     posts_slug = [ p.post_slug for p in Post.objects.all()]
     if single_slug in posts_slug:
         posts = Post.objects.get(post_slug=single_slug)
-
-        context = {"post": posts,'sidebar': sidebar}
+        comments = Comment.objects.filter(post = posts)
+        form = post_comment(request, posts)
+        context = {"post": posts,'sidebar': sidebar,'comment_form':form,'comments':comments}
         return render(request, 'post_view.html', context)
+    else:
+        return Http404
     
     #post_slug =[p.post_slug for p in Post.objects.all() ]
     #if single_slug in post_slug:
@@ -95,9 +111,7 @@ def single_slug(request,single_slug):
     #    return render(request, 'post_view.html', context)
     #else:
     #    raise Http404
-        #page_not_found(request, 'Articule not founde')
-        
-        
+        #page_not_found(request, 'Articule not founde')               
 
 def register(request):    
     if request.method == "POST":

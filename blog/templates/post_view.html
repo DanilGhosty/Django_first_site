@@ -16,9 +16,23 @@
                 </div>
             </div>
             {% include "sidebar.html" %}
-
-            
         </div>
+        <div class="row">
+            <form method = 'POST'>
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button class="btn waves-effect waves-light" type="submit">
+                    Submit
+                </button>
+            </form>
+        </div>
+        {% for comment in comments %}
+            <div class="row">
+                <p>{{comment}}</p>
+                <p>{{comment.date_posted}}</p>
+            </div>
+        {% endfor %}
+        
         {% include "Paginator_bar.html" %}
     </div>
 {% endblock %}
