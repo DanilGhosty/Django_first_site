@@ -1,18 +1,24 @@
 import re
 from turtle import title
-from django.shortcuts import redirect, render
-from django.http import  HttpResponse
+from django.shortcuts import redirect, render, get_object_or_404
+from django.http import  HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.views.defaults import page_not_found
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from django.urls import reverse
 from .forms import AddPostForm,AddComment
 from .models import Post, Post_category, Comment
 
 
 # Create your views here.
+def LikeView(request, pk):
+    post=get_object_or_404(Post, id=request.POST.get('single_slug'))
+    post.likes.add(request.user)
+    return HttpResponseRedirect(reverse('slug_url', args=[str(pk)]))
+
 
 def paginator(request, posts):
     paginator = Paginator(posts, 2)

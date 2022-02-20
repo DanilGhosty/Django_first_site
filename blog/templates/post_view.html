@@ -16,6 +16,7 @@
                 </div>
             </div>
             {% include "sidebar.html" %}
+            {% if not user.is_authenticated %}
         </div>
         <div class="row">
             <form method = 'POST'>
@@ -26,13 +27,22 @@
                 </button>
             </form>
         </div>
+        {% endif %}
         {% for comment in comments %}
             <div class="row">
                 <p>{{comment}}</p>
                 <p>{{comment.date_posted}}</p>
             </div>
         {% endfor %}
-        
-        {% include "Paginator_bar.html" %}
     </div>
-{% endblock %}
+
+    <div></div>
+    <hr></hr>
+    </br>
+    <form action="{% url 'like_post' post.pk%}" method="POST">
+        {% csrf_token %}
+        <button type="submit", name="post_id", value="{{single_slug}}", class="btn waves-effect waves-light">Like</button>
+    </form>    
+        {% include "Paginator_bar.html" %}
+    
+    {% endblock %}

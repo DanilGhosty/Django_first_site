@@ -22,6 +22,10 @@ class Post(models.Model):
     published_date = models.DateTimeField(null=True, blank=True)
     post_slug = models.CharField(max_length=80, default="default_post")
     post_category = models.ForeignKey(Post_category, default=1, on_delete=models.SET_DEFAULT)
+    likes = models.ManyToManyField(User,related_name='blog_posts')
+
+    def total_likes(self):
+        return self.likes.count()
 
     def publish(self):
         self.published_date = timezone.now()
@@ -29,6 +33,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title + ' ' + str(self.creation_date)
+
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
