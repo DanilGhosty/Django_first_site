@@ -1,18 +1,27 @@
+from multiprocessing import context
 import re
 from turtle import title
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_list_or_404
 from django.http import  HttpResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.views.defaults import page_not_found
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from django.urls import reverse
 from .forms import AddPostForm,AddComment
 from .models import Post, Post_category, Comment
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+
+def LikeView(request, pk):
+    post= get_list_or_404(Post,post_slug=request.POST.get('post_slug'))
+    post.likes.add(request.user)
+    return HttpResponseRedirect(reverse('post_view',args=[str(pk)]))
+
 
 def paginator(request, posts):
     paginator = Paginator(posts, 2)
@@ -41,6 +50,14 @@ def main_page(request):
         'sidebar': categories
     }
     return render(request, 'main_page.html', context)
+
+@login_required
+def profile(request):
+    profile = request.user.profile
+    context = {
+        'profile': profile
+    }
+    return render(request, 'profile.html', context)
 
 def add_post(request):
     add_post_form=None
