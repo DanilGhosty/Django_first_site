@@ -30,6 +30,7 @@
         {% endif %}
         {% for comment in comments %}
             <div class="row">
+                <a href="{% url 'look_profile' comment.author.username%}"><img src="/{{comment.author.profile.avatar}}" alt=""></a>
                 <p>{{comment}}</p>
                 <p>{{comment.date_posted}}</p>
             </div>

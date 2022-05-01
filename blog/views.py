@@ -1,5 +1,4 @@
 from multiprocessing import context
-import re
 from turtle import title
 from django.shortcuts import redirect, render, get_list_or_404
 from django.http import  HttpResponse
@@ -10,8 +9,9 @@ from django.views.defaults import page_not_found
 from django.http import Http404, HttpResponseRedirect
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.urls import reverse
-from .forms import AddPostForm,AddComment
-from .models import Post, Post_category, Comment
+from .forms import AddPostForm,AddComment, UpdateProfileform, \
+    UpdateUserForm, RegisterForm
+from .models import Post, Post_category, Comment, Profile
 from django.contrib.auth.decorators import login_required
 
 
@@ -53,11 +53,33 @@ def main_page(request):
 
 @login_required
 def profile(request):
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateProfileform(request.POST, request.FILES, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect(to='user_profile')
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateProfileform(instance=request.user.profile)
     profile = request.user.profile
     context = {
-        'profile': profile
+        'profile': profile,
+        'user_form':user_form,
+        'profile_form':profile_form
     }
     return render(request, 'profile.html', context)
+
+def look_profile(request,profile):
+    profile = Profile.objects.get(user__username=profile)
+    if profile == request.user.profile:
+        return redirect(to='user_profile')
+    return render(request, 'look_profile.html',
+                 {'profile': profile}
+                  )
+    
+
 
 def add_post(request):
     add_post_form=None
@@ -132,7 +154,7 @@ def single_slug(request,single_slug):
 
 def register(request):    
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get("username")
@@ -143,7 +165,7 @@ def register(request):
             for msg in form.error_messages:
                 messages.error(request,f'{msg} : {form.error_messages[msg]}')
             return render(request, 'register.html', context={'form':form})
-    form = UserCreationForm
+    form = RegisterForm
     context={'form':form}
     return render(request, 'register.html', context)
 

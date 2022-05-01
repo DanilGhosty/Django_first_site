@@ -9,6 +9,10 @@
 <div class="container">
     <h1 class="Welcome">Welcome to sitama</h1>
     <p>Today is a nice day</p> 
+    {% if not user.is_authenticated %}
+    <button class="btn waves-effect waves-light" form="search_nav" type="submit">
+    <a href="/register" class="black-text">Register</a></button>
+    {% endif %}
     <div class="row">
     {% for post in posts%}
     <div class="col s12 m5 l5">
@@ -28,9 +32,10 @@
     </div>
     
     {% endfor %}
-    {% include "sidebar.html" %}
-    
+    {% if user.is_authenticated %}
+    {% include "sidebar.html" %}   
     {% include "Paginator_bar.html" %}
+    {% endif %}
     
 </div>
 </body>
