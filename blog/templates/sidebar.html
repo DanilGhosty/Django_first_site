@@ -1,7 +1,11 @@
-<script>document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.collapsible');
-    var instances = M.Collapsible.init(elems);});
-  </script>
+<script> 
+  M.AutoInit();
+  document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.collapsible');
+  console.log(elems);
+  var instances = M.Collapsible.init(elems);
+  });
+</script>
 
 <div class="col s12 m2 l2">
     <ul class="collapsible">
