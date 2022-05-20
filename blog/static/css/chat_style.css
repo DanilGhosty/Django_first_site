@@ -1,0 +1,12 @@
+.mes_card{
+    margin: 5px 0;
+    background: linear-gradient(#77a1d3 ,#79cbca,#e684ae);
+    background-size: 1920px 1016px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+.active_user{
+    background: rgba(37, 37, 37, 0.068);
+    top: calc(54.7/2);
+}
+

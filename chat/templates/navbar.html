@@ -11,7 +11,14 @@
     <title>Blog</title>
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="{% static 'css/materialize.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sidenav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chat_style.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
+    
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -20,53 +27,64 @@
 <body class="bg">
   <!--бокова панели_юзер-->
     <ul id="slide-out" class="sidenav">
-      <li><div class="user-view">
-        <div class="background">
-          <img src=/{{user.profile.avatar}}>
+      <li>
+        <div class="user-view">
+          <div class="background">
+            <img src="../static/img/profiles/default_bg.jpg"> 
+          </div>
         </div>
-        <a href="/profile"><img class="circle" src=/{{user.profile.avatar}}></a>
-        <a href="/profile"><span class="white-text name">{{user.username}}</span></a>
-        <a href="/profile"><span class="white-text email">{{user.email}}</span></a>
-      </div></li>
+      </li>
+       <a href="/profile"><img class="circle" src=/{{user.profile.avatar}}></a>
+      <li><a href="/profile"><span class="white-text name">{{user.username}}</span></a>
+          <a href="/profile"><span class="white-text email">{{user.email}}</span></a></li> 
       <li><a href="/profile">Profile</a></li>
+      <li><a href="/chat/1" ><span class="new badge">{{msg_num}}</span>Chat</a></li>
     </ul>
 
     <!--Навигация-->
-    <nav>
-      <div class="nav-wrapper light-blue darken-4">
-        <div class="container">
-          <a href="/" class="brand-logo col s2 m2 l2 amber-text darken-4-text">Sitama</a>         
-          <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li>
-              <form class="" id="search_nav" method="POST" action="{% url 'search_post'%}">
-                {% csrf_token %}
-                <input type="search" name="searchpost" placeholder="Search">           
-              </form>
-            </li>
-            <li>
-              {% if user.is_authenticated %}
-              <button class="btn waves-effect waves-light" form="search_nav" type="submit">
-                <i class="large material-icons">search</i></button>
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper light-blue darken-4">
+          <div class="container">
+            <a href="/" class="brand-logo col s2 m2 l2 amber-text darken-4-text">Sitama</a>         
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li>
+                <form class="" id="search_nav" method="POST" action="{% url 'search_post'%}">
+                  {% csrf_token %}
+                  <input type="search" name="searchpost" placeholder="Search">           
+                </form>
+              </li>
+              <li>
+                {% if user.is_authenticated %}
+                <button class="btn waves-effect waves-light" form="search_nav" type="submit">
+                  <i class="large material-icons">search</i></button>
+                {% else %}
+                <button class="btn waves-effect waves-light" type="error">
+                  Search</button> 
+                {% endif %}
+              </li>
+              {% if not user.is_authenticated %}
+              <li><a href="/register">Register</a></li>
               {% else %}
-              <button class="btn waves-effect waves-light" type="error">
-                Search</button> 
-              {% endif %}
-            </li>
-            {% if not user.is_authenticated %}
-            <li><a href="/register">Register</a></li>
-            {% else %}
-            <li><a href="#" data-target="slide-out">menu</a></li>
-            <li><a href="/add_post">Create a title</a></li>
-            <li><a href="/logout"><i class="small material-icons">exit_to_app</i></a></li>
+              <a href="#" data-target="slide-out" class="sidenav-trigger">menu</a>
+              <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.sidenav');
+                var instances = M.Sidenav.init(elems, {});
+                        });
+              </script>
+              <li><a href="/add_post">Create a title</a></li>
+              <li><a href="/logout"><i class="small material-icons">exit_to_app</i></a></li>
 
-            {% endif %}
-          </div> 
-          </ul>
-      </div>
-    </nav>
+              {% endif %}
+            </div> 
+            </ul>
+        </div>
+      </nav>
+    </div>
     <!--кнопочка бокової пели-->
     {% if user.is_authenticated %}
-      <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <a style="position: fixed; " href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <script>
           document.addEventListener('DOMContentLoaded', function() {
           var elems = document.querySelectorAll('.sidenav');
@@ -90,9 +108,9 @@
         M.AutoInit();
         {% if msg.tags == 'error' %}
             M.toast({html: '{{msg}}',classes:"orange", displayLength:15000});
-        {% elif msg.tags == 'success' %};
+        {% elif msg.tags == 'success' %}
             M.toast({html: '{{msg}}',classes:"green", displayLength:15000});
-        {% elif msg.tags == 'info' %};
+        {% elif msg.tags == 'info' %}
             M.toast({html: '{{msg}}',classes:"blue", displayLength:15000});
         {% endif %}
     </script>

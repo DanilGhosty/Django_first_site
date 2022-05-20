@@ -1,0 +1,12 @@
+.sidenav-fixed{
+    position: fixed;
+    width: 200px;
+    z-index: 1;
+    top: calc(0+64px);
+    left: 0;
+    height: 600px;
+    float:left;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    overflow: scroll
+}

@@ -13,6 +13,7 @@ from .forms import AddPostForm,AddComment, UpdateProfileform, \
     UpdateUserForm, RegisterForm
 from .models import Post, Post_category, Comment, Profile
 from django.contrib.auth.decorators import login_required
+from chat.views import unread_msg_num
 
 
 # Create your views here.
@@ -45,9 +46,11 @@ def main_page(request):
     else: posts = ""
     categories = Post_category.objects.all()
     posts = paginator(request, list(posts))
+    msg_num = unread_msg_num(request)
     context={
         'posts': posts,
-        'sidebar': categories
+        'sidebar': categories,
+        'msg_num': msg_num
     }
     return render(request, 'main_page.html', context)
 

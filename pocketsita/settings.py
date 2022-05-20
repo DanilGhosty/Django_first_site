@@ -123,7 +123,7 @@ USE_TZ = True
 STATIC_URL = "blog/static/img/"
 STATICFILES_DIRS=[
     BASE_DIR / "blog/static",
-    BASE_DIR / "blog/static/img"
+    BASE_DIR / "blog/static/img",
 ]
 
 
