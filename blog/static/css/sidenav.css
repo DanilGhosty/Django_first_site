@@ -1,12 +1,22 @@
 .sidenav-fixed{
     position: fixed;
-    width: 200px;
     z-index: 1;
     top: calc(0+64px);
     left: 0;
-    height: 600px;
+    min-height: 730px;
     float:left;
     overflow-y: scroll;
-    overflow-x: scroll;
-    overflow: scroll
+}
+#style-scroll::-webkit-scrollbar
+{
+	width: 6px;
+}
+
+#style-scroll::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-image:-webkit-gradient(linear,left bottom,left top,
+						              color-stop(0.3, rgb(122,153,217)),
+						              color-stop(0.4, rgb(73,125,189)),
+						              color-stop(0.9, rgb(28,58,148)));
 }

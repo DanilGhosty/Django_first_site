@@ -8,17 +8,17 @@
             <div class="col s12 m10 l10">
 
                 <div class="panel amber darken-2">
-                    <span text-align="center" display="block"><img class="responcive-img center-align" src="/{{post.post_img}}"></span>
-                    <h3 class="center-align pink-text accent-4-text">{{post.title}}</h3>
+                    <span style="display: flex; justify-content: center;" text-align="center" display="block" ><img style="max-width: 1045px;" class="responcive-img center-align" src="/{{post.post_img}}"></span>
+                    <h3 class="center-align black-text">{{post.title}}</h3>
                     <p class="flow-text center-align">
                         <span class="white-text">{{post.text}}</span>
                     </p>
                 </div>
             </div>
             {% include "sidebar.html" %}
-            {% if not user.is_authenticated %}
+            {% if user.is_authenticated %}
         </div>
-        <div class="row">
+        <div style="margin: 15px 10px;" class="row">
             <form method = 'POST'>
                 {% csrf_token %}
                 {{ comment_form.as_p }}
@@ -29,10 +29,12 @@
         </div>
         {% endif %}
         {% for comment in comments %}
-            <div class="row">
-                <a href="{% url 'look_profile' comment.author.username%}"><img src="/{{comment.author.profile.avatar}}" alt=""></a>
-                <p>{{comment}}</p>
-                <p>{{comment.date_posted}}</p>
+            <div style="display: flex;margin-left: 10px;justify-content: space-between;width: 15%;" class="row">
+                <a href="{% url 'look_profile' comment.author.username%}"><img src="/{{comment.author.profile.avatar}}" alt="" class="circle responsive-img"></a>
+                <div style="display: flex;flex-direction: column;justify-content: center;">
+                    <p style="color: aliceblue; font-size: 25px; margin: 0;">{{comment}}</p>
+                    <p style="color: aliceblue; font-size: small;">{{comment.date_posted}}</p>
+                </div>
             </div>
         {% endfor %}
     </div>

@@ -2,8 +2,8 @@
 {% load humanize %}
 
 {% block content %}
-<div class="row">
-    <div style=" top: 80px;" class="col s4 m2 l2 sidenav-fixed">
+<div class="row" id="style-scroll">
+    <div style=" top: 80px;" class="col s4 m2 l2 sidenav-fixed" id="style-scroll">
         <div style="display: flex;">
         <form class="" id="search_user" method=POST action="{% url 'search_user' %}">
             {% csrf_token %}
@@ -41,8 +41,8 @@
                 
                         <div class="col s12 m12 l12">
                             <div class="mes_card {% if request.user == message.sender %} right{% else %} left{% endif %}" style="padding: 3px;">
-                                <div class="card-content" style="display: flex; align-items: center;">
-                                    <p style="font-family: 'Oswald', sans-serif; color: white; margin:0 10px; font-size: 20px; text-align:{% if request.user == message.sender %}right {% else %} left {% endif %};">{{ message.message }}</p>
+                                <div class="card-content" style="display: flex; align-items: center; max-width: 250px;">
+                                    <p style="font-family: 'Oswald', sans-serif; color: white; margin:0 10px; font-size: 20px; text-align: {% if request.user == message.sender %}right {% else %} left {% endif %};">{{ message.message }}</p>
                                     <p style="font-size: 10px;">{{ message.date_created }}</p>
                                 </div>
                             </div>
@@ -127,16 +127,16 @@
             class_name = "right";
         }
         let parent_div = document.createElement('div');
-        parent_div.className = 'col s12 m12 l12'
+        parent_div.className = 'col s12 m12 l12';
         let div = document.createElement('div');
         div.classList.add("mes_card", class_name);
         div.innerHTML = `
-                        <div class="card-content" style="display: flex;">
-                        <p style="color: white; margin: 0px; font-size: 15px; text-align:{% if request.user == message.sender %}right {% else %} left {% endif %};">${ message.message }</p>
+                        <div class="card-content" style="display: flex; max-width: 250px;">
+                        <p style="font-family: 'Oswald', sans-serif; color: white; margin:0 10px; font-size: 20px; text-align: {% if request.user == message.sender %}right {% else %} left {% endif %};">${ message.message }</p>
                         <p style="font-size: 10px;">${ message.date_created }</p>
                         </div>`;
         parent_div.appendChild(div);
-        message_container.appendChild(div);
+        message_container.appendChild(parent_div);
         div.scrollIntoView();
     } 
 
