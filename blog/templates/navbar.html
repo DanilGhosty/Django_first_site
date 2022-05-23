@@ -27,18 +27,16 @@
 <body class="bg">
   <!--бокова панели_юзер-->
     <ul id="slide-out" class="sidenav">
-      <li>
-        <div class="user-view">
-          <div class="background">
-            <img src="../static/img/profiles/default_bg.jpg"> 
-          </div>
+      <li><div class="user-view">
+        <div class="background">
+          <img style="filter:blur(4px);" src="/blog/static/img/profiles/default_bg_smaller.png"> 
         </div>
-      </li>
-       <a href="/profile"><img class="circle" src=/{{user.profile.avatar}}></a>
-      <li><a href="/profile"><span class="white-text name">{{user.username}}</span></a>
-          <a href="/profile"><span class="white-text email">{{user.email}}</span></a></li> 
+        <a href="/profile"><img class="circle" src=/{{user.profile.avatar}}></a>
+        <a href="/profile"><span class="white-text name">{{user.username}}</span></a>
+        <a href="/profile"><span class="white-text email">{{user.email}}</span></a>
+      </div></li>
       <li><a href="/profile">Profile</a></li>
-      <li><a href="/chat/1" ><span class="new badge">{{msg_num}}</span>Chat</a></li>
+      <li><a href="/chat/1" ><span class="new badge">{{msg_num}}</span>Chat</a></li> 
     </ul>
 
     <!--Навигация-->
